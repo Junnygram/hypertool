@@ -96,7 +96,9 @@ export default function DownloadPage() {
       )}
 
       {!loading && videoTitle && (
-        <p className="mt-2 text-lg text-gray-300">Video: {videoTitle}</p>
+        <p className="mt-2 p-2 text-lg text-gray-300 text-center">
+          Video: {videoTitle}
+        </p>
       )}
 
       {!loading && videoTitle && url && (
