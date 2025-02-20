@@ -4,26 +4,25 @@ import path from 'path';
 
 export async function POST(req: Request) {
   try {
-    const { url }: { url?: string } = await req.json();
+    const { url, title }: { url?: string; title?: string } = await req.json();
 
-    if (!url) {
+    if (!url || !title) {
       return NextResponse.json(
-        { status: 'error', message: 'YouTube URL is required' },
+        { status: 'error', message: 'YouTube URL and title are required' },
         { status: 400 }
       );
     }
 
+    // Set download path with the confirmed title
     const outputPath = path.join(
       process.cwd(),
       'downloads',
-      '%(title)s.%(ext)s'
+      `${title}.%(ext)s`
     );
-    const command = `yt-dlp -f best -o "${outputPath}" "${url}"`;
+    const downloadCommand = `yt-dlp -f best -o "${outputPath}" "${url}"`;
 
     return new Promise((resolve) => {
-      let progress = 'Downloading...';
-
-      const process = exec(command, (error, stdout, stderr) => {
+      exec(downloadCommand, (error, stdout, stderr) => {
         if (error) {
           resolve(
             NextResponse.json(
@@ -42,16 +41,16 @@ export async function POST(req: Request) {
         }
       });
 
-      process.stdout?.on('data', (data) => {
-        console.log('Download Progress:', data);
-        progress = 'Downloading...';
-      });
-
-      resolve(NextResponse.json({ status: 'started', message: progress }));
+      resolve(
+        NextResponse.json({
+          status: 'started',
+          message: `Downloading ${title}...`,
+        })
+      );
     });
-  } catch {
+  } catch (error) {
     return NextResponse.json(
-      { status: 'error', message: 'Internal Server Error' },
+      { status: 'error', message: 'Internal Server Error', details: error },
       { status: 500 }
     );
   }
