@@ -1,8 +1,4 @@
 import { NextResponse } from 'next/server';
-import { exec } from 'child_process';
-import util from 'util';
-
-const execPromise = util.promisify(exec);
 
 export async function POST(req: Request) {
   try {
@@ -15,10 +11,25 @@ export async function POST(req: Request) {
       );
     }
 
-    // Get video title before downloading
-    const titleCommand = `yt-dlp --print title "${url}"`;
-    const { stdout: title } = await execPromise(titleCommand);
-    const videoTitle = title.trim();
+    // Fetch the YouTube page HTML
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      },
+    });
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { status: 'error', message: 'Failed to fetch video page' },
+        { status: 500 }
+      );
+    }
+
+    const html = await response.text();
+
+    // Extract title from OpenGraph metadata
+    const match = html.match(/<meta\s+property="og:title"\s+content="([^"]+)"/);
+    const videoTitle = match ? match[1] : 'Unknown Title';
 
     return NextResponse.json({
       status: 'success',
