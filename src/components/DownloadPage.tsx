@@ -103,22 +103,7 @@ export default function DownloadPage() {
         </p>
       )}
 
-      {/* {!loading && videoTitle && ( */}
-      {/* <button
-        onClick={handleDownload}
-        disabled={status === 'downloading'}
-        className={`mt-4 px-6 py-2 rounded-lg transition ${
-          loading && status === 'downloading'
-            ? 'bg-gray-600 cursor-not-allowed bg-gray-300'
-            : // : loading
-              // ? 'cursor-not-allowed bg-gray-300'
-              'bg-blue-500 hover:bg-blue-600'
-        }`}
-      >
-        {status === 'downloading' ? 'Downloading...' : 'Download'}
-      </button> */}
-
-      {!loading && videoTitle ? (
+      {!loading ? (
         <button
           onClick={handleDownload}
           disabled={status === 'downloading'}
