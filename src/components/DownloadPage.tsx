@@ -22,8 +22,8 @@ export default function DownloadPage() {
   const handleUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputUrl = e.target.value;
     setUrl(inputUrl);
-    setVideoTitle(null);
-    setThumbnail(null);
+    // setVideoTitle(null);
+    // setThumbnail(null);
     setLoading(true);
 
     const videoId = extractVideoId(inputUrl);
@@ -37,6 +37,8 @@ export default function DownloadPage() {
       });
 
       const data = await res.json();
+      console.log({ videoTitle, url, status });
+
       if (data.status === 'success') {
         setVideoTitle(data.title);
       } else {
@@ -101,19 +103,21 @@ export default function DownloadPage() {
         </p>
       )}
 
-      {!loading && videoTitle && url && (
-        <button
-          onClick={handleDownload}
-          disabled={status === 'downloading'}
-          className={`mt-4 px-6 py-2 rounded-lg transition ${
-            status === 'downloading'
-              ? 'bg-gray-600 cursor-not-allowed'
-              : 'bg-blue-500 hover:bg-blue-600'
-          }`}
-        >
-          {status === 'downloading' ? 'Downloading...' : 'Download'}
-        </button>
-      )}
+      {/* {!loading && videoTitle && ( */}
+      <button
+        onClick={handleDownload}
+        disabled={status === 'downloading'}
+        className={`mt-4 px-6 py-2 rounded-lg transition ${
+          status === 'downloading'
+            ? 'bg-gray-600 cursor-not-allowed'
+            : loading
+            ? 'cursor-not-allowed'
+            : 'bg-blue-500 hover:bg-blue-600'
+        }`}
+      >
+        {status === 'downloading' ? 'Downloading...' : 'Download'}
+      </button>
+      {/* )} */}
 
       {/* {message && <p className="mt-4 text-gray-300">{message}</p>} */}
     </div>
