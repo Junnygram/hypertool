@@ -103,20 +103,27 @@ export default function DownloadPage() {
         </p>
       )}
 
-      {/* {!loading && videoTitle && ( */}
-      <button
-        onClick={handleDownload}
-        disabled={status === 'downloading'}
-        className={`mt-4 px-6 py-2 rounded-lg transition ${
-          status === 'downloading'
-            ? 'bg-gray-600 cursor-not-allowed'
-            : loading
-            ? 'cursor-not-allowed'
-            : 'bg-blue-500 hover:bg-blue-600'
-        }`}
-      >
-        {status === 'downloading' ? 'Downloading...' : 'Download'}
-      </button>
+      {!loading ? (
+        <button
+          onClick={handleDownload}
+          disabled={status === 'downloading'}
+          className={`mt-4 px-6 py-2 rounded-lg transition ${
+            status === 'downloading'
+              ? 'bg-gray-600 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600'
+          }`}
+        >
+          {status === 'downloading' ? 'Downloading...' : 'Download'}
+        </button>
+      ) : (
+        <button
+          disabled
+          className="mt-4 px-6 py-2 rounded-lg bg-gray-300 cursor-not-allowed"
+        >
+          Download
+        </button>
+      )}
+
       {/* )} */}
 
       {/* {message && <p className="mt-4 text-gray-300">{message}</p>} */}
