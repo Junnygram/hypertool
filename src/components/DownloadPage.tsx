@@ -49,7 +49,7 @@ export default function DownloadPage() {
   };
 
   const handleDownload = async () => {
-    if (!url || !videoTitle) return;
+    if (!url) return;
 
     setStatus('downloading');
     // setMessage('Starting download...');
