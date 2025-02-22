@@ -5,9 +5,9 @@ import path from 'path';
 export async function POST(req: Request) {
   try {
     const { url, title }: { url?: string; title?: string } = await req.json();
-    if (!url || !title) {
+    if (!url) {
       return NextResponse.json(
-        { status: 'error', message: 'YouTube URL and title are required' },
+        { status: 'error', message: 'YouTube URL  required' },
         { status: 400 }
       );
     }
